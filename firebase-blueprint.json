@@ -1,0 +1,42 @@
+{
+  "entities": {
+    "users": {
+      "title": "User",
+      "description": "Stores user GitHub tokens and preferences.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "githubUsername": { "type": "string", "description": "GitHub username" },
+        "githubAccessToken": { "type": "string", "description": "Encrypted or stored GitHub token" },
+        "lastPushDate": { "type": "string", "format": "date-time", "description": "Last time a push was made" },
+        "streak": { "type": "integer", "description": "Current daily streak" },
+        "repoName": { "type": "string", "description": "The repository used for daily contributions" },
+        "autoMode": { "type": "boolean", "description": "Whether auto-push is enabled" }
+      },
+      "required": ["uid", "githubAccessToken"]
+    },
+    "logs": {
+      "title": "Git Log",
+      "description": "Records of AI-generated commits.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "User UID" },
+        "timestamp": { "type": "string", "format": "date-time", "description": "When the commit happened" },
+        "commitMessage": { "type": "string", "description": "The AI-generated commit message" },
+        "content": { "type": "string", "description": "The content added to the repo" },
+        "status": { "type": "string", "enum": ["success", "failed"], "description": "Status of the push" }
+      },
+      "required": ["uid", "timestamp", "commitMessage"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": "users",
+      "description": "User profile and tokens"
+    },
+    "/logs/{logId}": {
+      "schema": "logs",
+      "description": "History of daily contributions"
+    }
+  }
+}
